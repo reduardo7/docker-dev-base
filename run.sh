@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# docker images
+# docker ps
+
+if [ -z "$BASH" ]; then
+    bash "$0" "$@"
+    exit $?
+fi
+
+# Utils
+
+s() {
+    echo
+    echo
+}
+
+e() {
+    echo "# $@"
+}
+
+# Run
+
 image_name=$1
 
 if [ -z "$image_name" ]; then
