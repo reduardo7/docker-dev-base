@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CURRENT_DIR="$(dirname "$0")"
+BASHX_DIR="${CURRENT_DIR}/src/bashx"
+
+if [ ! -d "${BASHX_DIR}" ]; then
+  echo "Installing bashx..."
+  git clone git@github.com:reduardo7/bashx.git "${BASHX_DIR}"
+fi
+
+export CONFIG_FILE="${CURRENT_DIR}/src/config.ini"
+. "${BASHX_DIR}/src/bashx.sh"
+run "$@"

@@ -1,2 +1,6 @@
 # docker-dev-base
-Docker Dev Base
+Docker Development Base Script
+
+# Init
+
+Run `sh dockdev` and work!
