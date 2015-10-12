@@ -35,8 +35,19 @@ if [ ! -z "${DOCKDEV_MOUNTS}" ]; then
   done
 fi
 
+# Name Action
+local name_action
+if docker ps -a | egrep "\s${name}$"
+  then
+    name_action="link"
+  else
+    name_action="name"
+  fi
+
+# Prepare
 set_on_exit after_run
 before_run
 
-e Running $(style bold)${name}$(style normal) [$(style bold)${DOCKDEV_IMAGE}$(style normal)]
-$cmd -name ${name} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}
+# Run
+e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action} -> ${DOCKDEV_IMAGE}$(style normal)]"
+$cmd --${name_action}=${name} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}
