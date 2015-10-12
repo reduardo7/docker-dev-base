@@ -9,7 +9,8 @@ LABEL description="Test"
 WORKDIR /home/
 
 RUN apt-get -y update
-RUN apt-get install -y git vim
+RUN apt-get install -y git vim apache2 mysql-server php5
+RUN apt-get install -y phpmyadmin
 
 # bash-completion
 RUN echo "" >> /etc/bash.bashrc
@@ -21,4 +22,8 @@ RUN echo "    . /etc/bash_completion" >> /etc/bash.bashrc
 RUN echo "  fi" >> /etc/bash.bashrc
 RUN echo "fi" >> /etc/bash.bashrc
 
-#EXPOSE 22
+# init.sh
+COPY init.sh /home/init.sh
+RUN chmod a+x /home/init.sh
+
+#EXPOSE 80
