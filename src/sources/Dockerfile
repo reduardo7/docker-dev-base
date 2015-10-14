@@ -19,6 +19,9 @@ FROM ubuntu:latest
       RUN echo >> /etc/apache2/apache2.conf
       RUN echo ServerName localhost >> /etc/apache2/apache2.conf
 
+# Config Files
+  COPY $PATH_FILES/etc/bash.bashrc /etc/bash.bashrc
+
 # init.sh
   WORKDIR $PATH_HOME
   COPY $PATH_FILES/init.sh $PATH_HOME/init.sh
