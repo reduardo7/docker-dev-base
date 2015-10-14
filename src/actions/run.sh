@@ -1,5 +1,5 @@
 ## [name]
-## Run container
+## Run container.
 ## Params:
 ##     name: Container Name. Default: "default"
 ## Example:
@@ -45,5 +45,5 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
       done
     fi
     # Run
-    $cmd --name=${name_action} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}
+    $cmd --name=${name_action} -i -t ${DOCKDEV_IMAGE} #${DOCKDEV_CMD}
   fi

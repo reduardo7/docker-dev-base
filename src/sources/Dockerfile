@@ -1,29 +1,29 @@
 FROM ubuntu:latest
-MAINTAINER Eduardo Daniel Cuomo
-LABEL version="1.0"
-LABEL description="Test"
 
-#ENV PATH_RES resources
-#ENV PATH_HOME $PATH_RES/home
+# Info
+  MAINTAINER Eduardo Daniel Cuomo
+  LABEL version="1.0"
+  LABEL description="Docker Development Base - Test"
 
-WORKDIR /home/
+# Variables
+  ENV PATH_FILES docker-files
+  ENV PATH_HOME /home
 
-RUN apt-get -y update
-RUN apt-get install -y git vim apache2 mysql-server php5
-RUN apt-get install -y phpmyadmin
+# Software
+  RUN apt-get -y update
+  RUN apt-get install -y git vim apache2 mysql-server php5
+  RUN apt-get install -y phpmyadmin
 
-# bash-completion
-RUN echo "" >> /etc/bash.bashrc
-RUN echo "if ! shopt -oq posix; then" >> /etc/bash.bashrc
-RUN echo "  if [ -f /usr/share/bash-completion/bash_completion ]; then" >> /etc/bash.bashrc
-RUN echo "    . /usr/share/bash-completion/bash_completion" >> /etc/bash.bashrc
-RUN echo "  elif [ -f /etc/bash_completion ]; then" >> /etc/bash.bashrc
-RUN echo "    . /etc/bash_completion" >> /etc/bash.bashrc
-RUN echo "  fi" >> /etc/bash.bashrc
-RUN echo "fi" >> /etc/bash.bashrc
+    # Apache
+      # Fix: Could not reliably determine the server's fully qualified domain name, using X.X.X.X. Set the 'ServerName' directive globally to suppress this message
+      RUN echo >> /etc/apache2/apache2.conf
+      RUN echo ServerName localhost >> /etc/apache2/apache2.conf
 
 # init.sh
-COPY init.sh /home/init.sh
-RUN chmod a+x /home/init.sh
+  WORKDIR $PATH_HOME
+  COPY $PATH_FILES/init.sh $PATH_HOME/init.sh
+  RUN chmod a+x $PATH_HOME/init.sh
+  CMD $PATH_HOME/init.sh
 
-#EXPOSE 80
+# Ports
+  #EXPOSE 80

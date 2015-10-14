@@ -2,7 +2,7 @@
 ## Build image
 ##
 ## Params
-##   container-id: (OPTIONAL) Container ID (see 'docker ps').
+##   container-id: (OPTIONAL) Container ID (see 'docker ps -a').
 
 local container_id="$1"
 
