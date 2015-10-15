@@ -9,19 +9,36 @@ FROM ubuntu:latest
 	ENV PATH_FILES docker-files
 	ENV PATH_HOME /home
 
-# Software
-	RUN apt-get -y update
-	RUN apt-get install -y git vim apache2 mysql-server php5
-	RUN apt-get install -y phpmyadmin
+# Set password to 'admin'
+#	RUN printf admin\\nadmin\\n | passwd
 
-	# Apache
+# Install Software
+	RUN apt-get -y update
+	# Utils
+		RUN apt-get install -y git vim
+	# MySQL
+		RUN apt-get install -y mysql-server mysql-client
+	# Apache2
+		RUN apt-get install -y apache2
 		# Fix: Could not reliably determine the server's fully qualified domain name, using X.X.X.X. Set the 'ServerName' directive globally to suppress this message
-		RUN echo >> /etc/apache2/apache2.conf
-		RUN echo ServerName localhost >> /etc/apache2/apache2.conf
+			RUN echo >> /etc/apache2/apache2.conf
+			RUN echo ServerName localhost >> /etc/apache2/apache2.conf
+	# PHP
+		RUN apt-get install -y php5 php5-mcrypt
+		# Mods
+			RUN php5enmod mcrypt
+	# phpMyAdmin
+		RUN apt-get install -y phpmyadmin
+		RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php
+		# Apache2 Conf
+			RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+			RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+			RUN a2enconf phpmyadmin.conf
 
 # WorkDir
 	WORKDIR $PATH_HOME
 
 # On Start | init.sh
 	COPY $PATH_FILES/init.sh $PATH_HOME/init.sh
-	CMD . $PATH_HOME/init.sh
+	RUN chmod a+x $PATH_HOME/init.sh
+	CMD $PATH_HOME/init.sh
