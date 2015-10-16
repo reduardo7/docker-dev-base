@@ -15,7 +15,7 @@ FROM ubuntu:latest
 # Install Software
 	RUN apt-get -y update
 	# Utils
-		RUN apt-get install -y git vim
+		RUN apt-get install -y git vim curl wget
 	# MySQL
 		RUN apt-get install -y mysql-server mysql-client
 	# Apache2
@@ -34,6 +34,10 @@ FROM ubuntu:latest
 			RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 			RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 			RUN a2enconf phpmyadmin.conf
+	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
+		RUN apt-get install -y zsh
+		RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+		COPY $PATH_FILES/zshrc /root/.zshrc
 
 # WorkDir
 	WORKDIR $PATH_HOME
