@@ -9,9 +9,6 @@ FROM ubuntu:latest
 	ENV PATH_FILES docker-files
 	ENV PATH_HOME /home
 
-# Copy Files
-	COPY $PATH_FILES/* $PATH_HOME/
-
 # Install Software
 	RUN apt-get -y update
 	RUN apt-get install -y \
@@ -24,10 +21,9 @@ FROM ubuntu:latest
 # Set password to 'admin'
 #	RUN printf admin\\nadmin\\n | passwd
 
-# Configure Software
+# Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
 		RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-		RUN mv -f $PATH_HOME/zshrc /root/.zshrc
 	# Apache2
 		# Fix: Could not reliably determine the server's fully qualified domain name, using X.X.X.X. Set the 'ServerName' directive globally to suppress this message
 			RUN echo >> /etc/apache2/apache2.conf
@@ -41,6 +37,13 @@ FROM ubuntu:latest
 			RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 			RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 			RUN a2enconf phpmyadmin.conf
+
+# Copy Files
+COPY $PATH_FILES/* $PATH_HOME/
+
+# Configure Software
+	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
+		RUN mv -f $PATH_HOME/zshrc /root/.zshrc
 
 # WorkDir
 	WORKDIR $PATH_HOME

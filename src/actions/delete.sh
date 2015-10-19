@@ -3,33 +3,40 @@
 ## Params:
 ##     name: Container name. To delete ALL Containers and Image, use "!ALL".
 
+local name="$1"
 local options=( y n )
+local options2=( s n )
 
-if [ -z "$1" ]; then
-  error "Parameter $(style bold)name$(style normal) is required"
-  exit 1
+if [ -z "$name" ]; then
+  name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
 fi
 
-if [[ "$1" == "!ALL" ]]; then
+e "$(style bold)WARINING! All container data $(style underline)WILL BE LOST!"
+pause
+
+if [[ "$name" == "!ALL" ]]; then
   if user_confirm "Confirm delete Image $(style bold)${DOCKDEV_IMAGE}$(style normal) and $(style bold)all related Containers$(style normal)? (${options[*]})" $options $FALSE ; then
-    # Delete containers
-    e "Deleting Containers for Image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
-    docker rm -f `docker ps -a | egrep "^\w+\s+${DOCKDEV_IMAGE}\s+" | awk '{print $1}'`
-    # Delete image
-    e "Deleting Image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
-    docker rmi -f ${DOCKDEV_IMAGE}
-  else
-    e "Operation canceled!"
-    exit 1
+    if user_confirm "Please RE-CONFIRM: Confirm delete Image $(style bold)${DOCKDEV_IMAGE}$(style normal) and $(style bold)all related Containers$(style normal)? (${options2[*]})" $options2 $FALSE ; then
+      # Delete containers
+      e "Deleting Containers for Image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
+      docker rm -f `docker ps -a | egrep "^\w+\s+${DOCKDEV_IMAGE}\s+" | awk '{print $name}'`
+      # Delete image
+      e "Deleting Image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
+      docker rmi -f ${DOCKDEV_IMAGE}
+      exit 0
+    fi
   fi
 else
-  local name="${DOCKDEV_IMAGE}.$1"
+  name="${DOCKDEV_IMAGE}.$name"
   if user_confirm "Confirm delete Container $(style bold)${name}$(style normal)? (${options[*]})" $options $FALSE; then
-    # Delete container
-    e "Deleting Container $(style bold)${name}$(style normal)..."
-    docker rm -f ${name}
-  else
-    e "Operation canceled!"
-    exit 1
+    if user_confirm "Please RE-CONFIRM: Confirm delete Container $(style bold)${name}$(style normal)? (${options2[*]})" $options2 $FALSE; then
+      # Delete container
+      e "Deleting Container $(style bold)${name}$(style normal)..."
+      docker rm -f ${name}
+      exit 0
+    fi
   fi
 fi
+
+e "Operation $(style bold)canceled!"
+exit 1

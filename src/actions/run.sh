@@ -53,6 +53,7 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
         fi
         # Run
         _prepare
+        cmd="$cmd $DOCKDEV_RUN_PARAMS"
         $cmd --name=${name_action} -e "DOCKDEV_NAME=${name_action}" -i -t ${DOCKDEV_IMAGE} #${DOCKDEV_CMD}
       else
         error "Image $(style bold)${DOCKDEV_IMAGE}$(style normal) not found! (run 'bash $0 build'?)"
