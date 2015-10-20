@@ -53,4 +53,4 @@ COPY $PATH_FILES/* $PATH_HOME/
 
 # On Start | init.sh
 	RUN chmod a+x $PATH_HOME/init.sh
-	CMD $PATH_HOME/init.sh
+	#CMD $PATH_HOME/init.sh
