@@ -41,5 +41,4 @@ else
   fi
 fi
 
-e "Operation $(style bold)canceled!"
-exit 1
+error "Operation $(style bold)canceled!"
