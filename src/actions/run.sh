@@ -29,12 +29,6 @@ _prepare() {
   before_run
 }
 
-# Pre-Checks
-
-if [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
-  error "Path $(style bold)$DOCKDEV_PROJECTS/${name_action}$(style normal) already exists!"
-fi
-
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
 if docker ps -a | egrep "\s${name_action}$" > /dev/null
@@ -43,6 +37,10 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
     _prepare
     docker start -i ${name_action}
   else
+    # Pre-Checks
+    if [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
+      error "Path $(style bold)$DOCKDEV_PROJECTS/${name_action}$(style normal) already exists!"
+    fi
     # Create container
     if user_confirm "Create new container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
       if docker images | egrep "^${DOCKDEV_IMAGE}\s" > /dev/null
