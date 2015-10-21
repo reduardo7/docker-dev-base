@@ -29,6 +29,12 @@ _prepare() {
   before_run
 }
 
+# Pre-Checks
+
+if [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
+  error "Path $(style bold)$DOCKDEV_PROJECTS/${name_action}$(style normal) already exists!"
+fi
+
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
 if docker ps -a | egrep "\s${name_action}$" > /dev/null
