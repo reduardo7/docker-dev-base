@@ -1,6 +1,7 @@
 _fix_perm() {
-  e "Fix permissions $DOCKDEV_PROJECTS/*"
-  sudo chmod a+w $DOCKDEV_PROJECTS/*
+  echo > $DEV_NULL
+  #e "Fix permissions $DOCKDEV_MOUNTS_FAKEMAIL"
+  #sudo chmod -R a+w $DOCKDEV_MOUNTS_FAKEMAIL
 }
 
 before_run() {
