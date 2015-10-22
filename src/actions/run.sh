@@ -57,6 +57,12 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
               cmd="${cmd} -v ${mnt}"
             done
           fi
+          # Variables
+          if [ ! -z "${DOCKDEV_VARIABLES}" ]; then
+            for v in ${DOCKDEV_VARIABLES[@]}; do
+              cmd="${cmd} -e ${v}"
+            done
+          fi
           # Run
           _prepare
           cmd="$cmd $DOCKDEV_RUN_PARAMS"

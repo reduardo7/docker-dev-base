@@ -25,9 +25,6 @@ FROM ubuntu:latest
 			rm fakeSMTP-latest.zip && \
 			mv -v /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
 
-# Set password to 'admin'
-#	RUN printf admin\\nadmin\\n | passwd
-
 # Volumes
 	VOLUME ["/root/home"]
 
@@ -61,11 +58,10 @@ COPY $PATH_FILES/* $PATH_HOME/
 
 # Configure Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
-		RUN mv -f $PATH_HOME/zshrc /root/.zshrc
+		RUN cp -f $PATH_HOME/zshrc /root/.zshrc
+		RUN mv -f $PATH_HOME/zshrc $PATH_HOME/.zshrc
 
-# WorkDir
+# Init
 	WORKDIR $PATH_HOME
-
-# On Start | init.sh
 	RUN chmod a+x $PATH_HOME/init.sh
 	#CMD $PATH_HOME/init.sh
