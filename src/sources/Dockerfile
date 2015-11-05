@@ -18,7 +18,7 @@ FROM ubuntu:latest
 		mysql-server mysql-client \
 		apache2 \
 		php5 php5-mcrypt \
-		mailutils \
+		mailutils sendmail \
 		openjdk-7-jdk
 	RUN apt-get install -y phpmyadmin
 	# FakeSMTP
@@ -55,9 +55,6 @@ FROM ubuntu:latest
 		#EXPOSE 25
 		VOLUME ["/var/mail"]
 		RUN echo "127.0.0.1 $(cat /etc/hostname)" > /etc/hosts
-		CMD \
-			echo "Starting fakeSMTP" && \
-			java -jar /opt/fakeSMTP.jar -s -p $PORT -b -o /var/mail &> /var/mail/mail.log &
 
 # Copy Files
 COPY $PATH_FILES/* $PATH_HOME/

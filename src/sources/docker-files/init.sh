@@ -16,4 +16,7 @@ fi
 service mysql start
 service apache2 start
 
+echo "Starting fakeSMTP"
+java -jar /opt/fakeSMTP.jar -s -p 25 -b -o /var/mail &> /var/mail/mail.log &
+
 zsh
