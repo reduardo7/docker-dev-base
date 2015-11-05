@@ -89,5 +89,5 @@ dockdev_get_name() {
   echo $DOCKDEV_NAME
 }
 
-PS1='╭─%F{red}### %F{cyan}{%F{red}$(dockdev_get_name)%F{cyan}} %F{red}%n%f%F{cyan}@%F{green}%M%f %B %F{blue}%~%f%b  $(git_prompt_info)
-╰─%F{red}➤ '
+PS1='%F{red}### %F{cyan}{%F{red}$(dockdev_get_name)%F{cyan}} %F{red}%n%f%F{cyan}@%F{green}%M%f %B %F{blue}%~%f%b  $(git_prompt_info)
+%f'
