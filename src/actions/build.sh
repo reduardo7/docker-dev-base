@@ -6,10 +6,17 @@
 
 local container_id="$1"
 
+if docker images | grep $DOCKDEV_IMAGE > $DEV_NULL
+	then
+		e "Deleting image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
+		! docker rmi $DOCKDEV_IMAGE && error "Error deleting image $(style bold)${DOCKDEV_IMAGE}$(style normal)!"
+	fi
+
 if [ -z "$container_id" ]; then
     e "Building $(style bold)${DOCKDEV_IMAGE}$(style normal) from $(style bold)Dockerfile$(style normal)..."
     docker build -t $DOCKDEV_IMAGE ${SOURCES_PATH}
 else
+	_rmi $container_id
     e "Building $(style bold)${DOCKDEV_IMAGE}$(style normal) from Container ID $(style bold)${container_id}$(style normal)..."
     echo docker commit $container_id $DOCKDEV_IMAGE
 fi

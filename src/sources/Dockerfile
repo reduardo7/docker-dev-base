@@ -3,11 +3,13 @@ FROM ubuntu:latest
 # Info
 	MAINTAINER Eduardo Daniel Cuomo
 	LABEL version="1.0"
-	LABEL description="Docker Development Base - Test"
+	LABEL description="Docker Development Environment Base - Test"
 
 # Variables
 	ENV PATH_FILES docker-files
 	ENV PATH_HOME /home
+	#ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+	ENV JAVA_HOME /usr/lib/jvm/default-java
 
 # Install Software
 	RUN apt-get -y update
@@ -16,7 +18,8 @@ FROM ubuntu:latest
 		mysql-server mysql-client \
 		apache2 \
 		php5 php5-mcrypt \
-		mailutils
+		mailutils sendmail \
+		openjdk-7-jdk
 	RUN apt-get install -y phpmyadmin
 	# FakeSMTP
 		RUN \
@@ -49,9 +52,6 @@ FROM ubuntu:latest
 		#EXPOSE 25
 		VOLUME ["/var/mail"]
 		RUN echo "127.0.0.1 $(cat /etc/hostname)" > /etc/hosts
-		CMD \
-			echo "Starting fakeSMTP" && \
-			java -jar /opt/fakeSMTP.jar -s -p $PORT -b -o /var/mail &> /var/mail/mail.log &
 
 # Copy Files
 COPY $PATH_FILES/* $PATH_HOME/
@@ -64,4 +64,3 @@ COPY $PATH_FILES/* $PATH_HOME/
 # Init
 	WORKDIR $PATH_HOME
 	RUN chmod a+x $PATH_HOME/init.sh
-	#CMD $PATH_HOME/init.sh
