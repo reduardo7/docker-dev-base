@@ -4,7 +4,7 @@
 if ! type curl > /dev/null
     then
         e "Installing $(style bold)curl$(style normal)..."
-        sudo sudo apt-get install -f curl
+        sudo apt-get install -f curl
     else
         e "$(style bold)curl$(style normal) already installed!"
     fi

@@ -11,6 +11,10 @@ FROM ubuntu:latest
 	#ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 	ENV JAVA_HOME /usr/lib/jvm/default-java
 
+# Volumes
+	VOLUME ["/root/home"]
+	VOLUME ["/var/mail"]
+
 # Install Software
 	RUN apt-get -y update
 	RUN apt-get install -y \
@@ -27,9 +31,6 @@ FROM ubuntu:latest
 			unzip fakeSMTP-latest.zip -d /opt && \
 			rm fakeSMTP-latest.zip && \
 			mv -v /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
-
-# Volumes
-	VOLUME ["/root/home"]
 
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
@@ -54,13 +55,14 @@ FROM ubuntu:latest
 		RUN echo "127.0.0.1 $(cat /etc/hostname)" > /etc/hosts
 
 # Copy Files
-COPY $PATH_FILES/* $PATH_HOME/
+	COPY $PATH_FILES/* $PATH_HOME/
 
 # Configure Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
-		RUN cp -f $PATH_HOME/zshrc /root/.zshrc
-		RUN mv -f $PATH_HOME/zshrc $PATH_HOME/.zshrc
+		RUN cp -r ~/.oh-my-zsh $PATH_HOME/.oh-my-zsh
+		RUN cp $PATH_HOME/.zshrc /root/.zshrc
 
 # Init
 	WORKDIR $PATH_HOME
-	RUN chmod a+x $PATH_HOME/init.sh
+	RUN chmod a+x $PATH_HOME/.init_user.sh
+	RUN chmod a+x $PATH_HOME/.init.sh
