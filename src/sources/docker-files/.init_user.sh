@@ -1,12 +1,9 @@
 #!/bin/bash
 # Executed every run
 
-# Export all environment variables
-for devenvvar in `printenv`; do
-	export $devenvvar
-done
-
 # User Config
+
+export HOME="$PATH_HOME"
 
 if ! getent passwd $DOCKDEV_USER_NAME > /dev/null
   then
@@ -48,5 +45,10 @@ if [ ! -d "$PATH_HOME/.git" ]; then
   fi
 fi
 
+# Fixes Mount
+for DOCKDEV_MOUNTS_PATHS_P in ${DOCKDEV_MOUNTS_PATHS[@]} ; do
+  chown -R $DOCKDEV_USER_NAME:$DOCKDEV_GROUP_NAME $DOCKDEV_MOUNTS_PATHS_P
+done
+
 # Run
-sudo -u $DOCKDEV_USER_NAME $@
+sudo -E -u $DOCKDEV_USER_NAME $@

@@ -12,8 +12,8 @@ FROM ubuntu:latest
 	ENV JAVA_HOME /usr/lib/jvm/default-java
 
 # Volumes
-	VOLUME ["/root/home"]
-	VOLUME ["/var/mail"]
+	VOLUME "/root/home"
+	VOLUME "/var/mail"
 
 # Install Software
 	RUN apt-get -y update
@@ -35,6 +35,9 @@ FROM ubuntu:latest
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
 		RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+	# Java JDK
+		# JAVA_HOME
+			ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 	# Apache2
 		EXPOSE 80
 		# Fix: Could not reliably determine the server's fully qualified domain name, using X.X.X.X. Set the 'ServerName' directive globally to suppress this message
@@ -64,5 +67,6 @@ FROM ubuntu:latest
 
 # Init
 	WORKDIR $PATH_HOME
-	RUN chmod a+x $PATH_HOME/.init_user.sh
-	RUN chmod a+x $PATH_HOME/.init.sh
+		RUN bash build.sh
+		RUN rm build.sh
+	ENV HOME $PATH_HOME

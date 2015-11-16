@@ -52,9 +52,16 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
             done
           fi
           # Mounts
+          local DOCKDEV_MOUNTS_PATHS
           if [ ! -z "${DOCKDEV_MOUNTS}" ]; then
             for mnt in ${DOCKDEV_MOUNTS[@]}; do
               cmd="${cmd} -v ${mnt}"
+
+              str_explode ":" "${mnt}"
+              if [ -z "${RESULT[2]}" ]; then
+                [ ! -z "$DOCKDEV_MOUNTS_PATHS" ] && DOCKDEV_MOUNTS_PATHS="${DOCKDEV_MOUNTS_PATHS} "
+                DOCKDEV_MOUNTS_PATHS="${DOCKDEV_MOUNTS_PATHS}${RESULT[2]}"
+              fi
             done
           fi
           # Variables
@@ -66,7 +73,7 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
           # Run
           _prepare
           cmd="$cmd $DOCKDEV_RUN_PARAMS"
-          $cmd --name="${name_action}" --hostname="${name_action}" -e "DOCKDEV_NAME=${name_action}" -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}
+          $cmd --name="${name_action}" --hostname="${name_action}" -e "DOCKDEV_NAME=${name_action}" -e "DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS}" -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}
         else
           error "Image $(style bold)${DOCKDEV_IMAGE}$(style normal) not found! (run 'bash $0 build'?)"
         fi
