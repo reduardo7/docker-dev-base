@@ -63,10 +63,15 @@ chown -R ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} /var/mail
 
 # Run
 
-if ! sudo -E -u ${DOCKDEV_USER_NAME} $PATH_HOME/.init.sh
-  then
-    echo "#########################################"
-    echo "### Error running $PATH_HOME/.init.sh ###"
-    echo "#########################################"
-    zsh
-  fi
+$PATH_HOME/.init_console.sh $PATH_HOME/.init.sh
+r=$?
+
+# Finish
+
+# Stop Services
+service mysql status > /dev/null && service mysql stop
+service apache2 status > /dev/null && service apache2 stop
+
+# Exit
+
+exit $r

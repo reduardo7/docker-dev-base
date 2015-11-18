@@ -14,7 +14,7 @@ FROM ubuntu:latest
 # Install Software
 	RUN apt-get -y update
 	RUN apt-get install -y \
-		git vim curl wget zsh unzip \
+		git vim curl wget zsh unzip ssh \
 		mysql-server mysql-client \
 		apache2 \
 		php5 php5-mcrypt \
@@ -50,7 +50,7 @@ FROM ubuntu:latest
 			RUN a2enconf phpmyadmin.conf
 	# FakeSMTP
 		#EXPOSE 25
-		RUN echo "127.0.0.1 $(cat /etc/hostname)" > /etc/hosts
+		RUN echo "127.0.0.1 $(cat /etc/hostname)" >> /etc/hosts
 
 # Copy Files
 	COPY $PATH_FILES/* $PATH_HOME/
