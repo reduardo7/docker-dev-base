@@ -9,7 +9,6 @@
 # docker ps
 
 e "Image: $(style bold)${DOCKDEV_IMAGE}"
-e "Command: $(style bold)${DOCKDEV_CMD}"
 
 . $SOURCES_PATH/hooks.sh
 
@@ -27,15 +26,23 @@ local name_action="${DOCKDEV_IMAGE}.${name}"
 _prepare() {
   set_on_exit after_run
   before_run
+  e "Command: $(style bold)${DOCKDEV_CMD}"
 }
 
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
 if docker ps -a | egrep "\s${name_action}$" > /dev/null
   then
-    # Start container
-    _prepare
-    docker start -i ${name_action}
+    if docker ps | egrep "\s${name_action}$" > /dev/null
+      then
+        # Running
+        # Start console
+        docker exec -i -t ${name_action} ${DOCKDEV_CMD_CONSOLE}
+      else
+        # Start container
+        _prepare
+        docker start -i ${name_action}
+      fi
   else
     # Pre-Checks
     if [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
