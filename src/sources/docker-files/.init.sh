@@ -17,6 +17,8 @@ e() {
   echo
 }
 
+# Set /etc/hosts
+
 _add_hosts() {
   local l="127.0.0.1 $1"
   if ! grep "$l" /etc/hosts > /dev/null
@@ -24,6 +26,8 @@ _add_hosts() {
       sudo bash -c "echo '$l' >> /etc/hosts"
     fi
 }
+
+_add_hosts "$(cat /etc/hostname)"
 
 # Start Services
 sudo service mysql start
@@ -37,8 +41,6 @@ if ! echo "SHOW TABLES" | mysql -u root phpmyadmin &> /dev/null
     e "Configure phpMyAdmin"
     sudo dpkg-reconfigure phpmyadmin
   fi
-
-_add_hosts "$(cat /etc/hostname)"
 
 # RUN
 zsh
