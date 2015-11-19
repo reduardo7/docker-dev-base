@@ -34,6 +34,7 @@ if ! getent passwd ${DOCKDEV_USER_NAME} > /dev/null
     for file in `ls -A | sed 's/\bprojects\b//'`; do
       [ ! -z "$file" ] && chown -vR ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} "$file"
     done
+    chown -v ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} /root
     chown -v ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} $PATH_HOME
   fi
 

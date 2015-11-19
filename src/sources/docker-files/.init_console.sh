@@ -8,7 +8,7 @@ if [[ $r -ne 0 ]]; then
   echo "#########################################"
   echo "### Error!"
   echo "### Command:   $@"
-  echo "### Exit code: $?"
+  echo "### Exit code: $r"
   echo "#########################################"
   zsh
   r=$?
