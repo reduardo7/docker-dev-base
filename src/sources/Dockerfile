@@ -43,7 +43,6 @@ FROM ubuntu:latest
 				# ROOT
 				&& mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'"
 	# Apache2
-		EXPOSE 80
 		# Fix: Could not reliably determine the server's fully qualified domain name, using X.X.X.X. Set the 'ServerName' directive globally to suppress this message
 			RUN echo >> /etc/apache2/apache2.conf
 			RUN echo ServerName localhost >> /etc/apache2/apache2.conf
@@ -68,6 +67,11 @@ FROM ubuntu:latest
 			RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
 			RUN ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
 			RUN a2enconf phpmyadmin.conf
+		# Session
+			RUN echo "# Session Time (8 hours)" >> /etc/phpmyadmin/config.inc.php
+			RUN echo "$sessionDuration = 60 * 60 * 8; // 60 * 60 * 24 * 7 = one week"etc/phpmyadmin/config.inc.php
+			RUN echo "ini_set('session.gc_maxlifetime', $sessionDuration);" >> /etc/phpmyadmin/config.inc.php
+			RUN echo "$cfg['LoginCookieValidity'] = $sessionDuration;" >> /etc/phpmyadmin/config.inc.php
 
 # Copy Files
 	COPY $PATH_FILES/* $PATH_HOME/
