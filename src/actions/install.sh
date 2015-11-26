@@ -22,7 +22,8 @@ if ! type docker > /dev/null
         e "Testing..."
         if ! sudo docker run hello-world
             then
-                e "Error!"
+                e "Error! You need restart the system"
+                e "$ sudo reboot"
                 exit 1
             fi
     else
