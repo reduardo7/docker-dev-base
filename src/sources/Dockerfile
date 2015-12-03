@@ -31,6 +31,8 @@ FROM ubuntu:latest
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
 		RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+		RUN mkdir -p ~/.oh-my-zsh/plugins/docker/
+		RUN curl -fLo ~/.oh-my-zsh/plugins/docker/_docker https://raw.github.com/felixr/docker-zsh-completion/master/_docker
 	# Java JDK
 		# JAVA_HOME
 			ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64

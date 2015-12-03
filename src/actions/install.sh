@@ -1,6 +1,16 @@
 ##
 ## Install required software
 
+install_host() {
+    if ! ping -c 1 $1 > /dev/null
+        then
+            e "Installing host $(style bold)$1"
+            sudo bash -c "echo '127.0.0.1 $1' >> /etc/hosts"
+        else
+            e "Host $(style bold)$1$(style normal) already installed!"
+        fi
+}
+
 if ! type curl > /dev/null
     then
         e "Installing $(style bold)curl$(style normal)..."
@@ -29,3 +39,5 @@ if ! type docker > /dev/null
     else
         e "$(style bold)docker$(style normal) already installed!"
     fi
+
+#install_host local.my-app.com

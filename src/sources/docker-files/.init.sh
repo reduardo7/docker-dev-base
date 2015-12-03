@@ -17,10 +17,17 @@ e() {
   echo
 }
 
+_error() {
+  e "Error! Code: $1. $2"
+  zsh
+  exit $1
+}
+
 # Set /etc/hosts
 
 _add_hosts() {
   local l="127.0.0.1 $1"
+  e "Installing host $l"
   if ! grep "$l" /etc/hosts > /dev/null
     then
       sudo bash -c "echo '$l' >> /etc/hosts"

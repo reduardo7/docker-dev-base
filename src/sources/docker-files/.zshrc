@@ -49,7 +49,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git docker)
 
 # User configuration
 
@@ -89,5 +89,5 @@ dockdev_get_name() {
   echo $DOCKDEV_NAME
 }
 
-PS1='%F{red}### %F{cyan}{%F{red}$(dockdev_get_name)%F{cyan}} %F{red}%n%f%F{cyan}@%F{green}%M%f %B %F{blue}%~%f%b  $(git_prompt_info)
+PS1='%F{red}### %F{cyan}{%F{red}DockDev | $(dockdev_get_name)%F{cyan}} %F{red}%n%f%F{cyan}@%F{green}%M%f %B %F{blue}%~%f%b  $(git_prompt_info)
 %f'
