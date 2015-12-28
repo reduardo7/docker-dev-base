@@ -19,7 +19,7 @@ e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(sty
 if docker ps | egrep "\s${name_action}$" > /dev/null
   then
     # Start console
-    docker exec -i -t ${name_action} ${DOCKDEV_CMD_CONSOLE}
+    docker exec -i -t ${name_action} bash -c "set -e && ${DOCKDEV_CMD}"
   else
     # Error
     error "Container $(style bold)${name_action}$(style normal) is not running!"

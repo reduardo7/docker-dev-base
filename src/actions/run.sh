@@ -80,7 +80,8 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
           fi
           # Run
           _prepare
-          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}"
+          DOCKDEV_CMD="${DOCKDEV_CMD//\"/\\\"}"
+          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} bash -c \"set -e && ${DOCKDEV_CMD}\""
           cmd_log "$cmd"
           #echo "$cmd"
         else
