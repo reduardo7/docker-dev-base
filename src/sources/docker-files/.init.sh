@@ -38,7 +38,7 @@ _add_hosts "$(cat /etc/hostname)"
 
 # Start Services
 sudo service mysql start
-sudo service apache2 start
+sudo service apache2 restart
 
 echo "Starting fakeSMTP"
 sudo java -jar /opt/fakeSMTP.jar -s -p 25 -b -o /var/mail &> /var/mail/mail.log &

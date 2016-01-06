@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+FROM phusion/baseimage:latest
+CMD ["/sbin/my_init"]
 
 # Info
 	MAINTAINER Eduardo Daniel Cuomo
@@ -22,11 +23,10 @@ FROM ubuntu:latest
 		openjdk-7-jdk
 	RUN apt-get install -y phpmyadmin
 	# FakeSMTP
-		RUN \
-			wget -q http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip && \
-			unzip fakeSMTP-latest.zip -d /opt && \
-			rm fakeSMTP-latest.zip && \
-			mv -v /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
+		RUN wget -q http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip
+		RUN unzip fakeSMTP-latest.zip -d /opt
+		RUN rm fakeSMTP-latest.zip
+		RUN mv -v /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
 
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
@@ -71,9 +71,9 @@ FROM ubuntu:latest
 			RUN a2enconf phpmyadmin.conf
 		# Session
 			RUN echo "# Session Time (8 hours)" >> /etc/phpmyadmin/config.inc.php
-			RUN echo "$sessionDuration = 60 * 60 * 8; // 60 * 60 * 24 * 7 = one week"etc/phpmyadmin/config.inc.php
-			RUN echo "ini_set('session.gc_maxlifetime', $sessionDuration);" >> /etc/phpmyadmin/config.inc.php
-			RUN echo "$cfg['LoginCookieValidity'] = $sessionDuration;" >> /etc/phpmyadmin/config.inc.php
+			RUN echo "\$sessionDuration = 60 * 60 * 8; // 60 * 60 * 24 * 7 = one week" >> etc/phpmyadmin/config.inc.php
+			RUN echo "ini_set('session.gc_maxlifetime', \$sessionDuration);" >> /etc/phpmyadmin/config.inc.php
+			RUN echo "\$cfg['LoginCookieValidity'] = \$sessionDuration;" >> /etc/phpmyadmin/config.inc.php
 
 # Copy Files
 	COPY $PATH_FILES/* $PATH_HOME/
@@ -90,3 +90,6 @@ FROM ubuntu:latest
 		RUN bash build.sh
 		RUN rm build.sh
 	ENV HOME $PATH_HOME
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp

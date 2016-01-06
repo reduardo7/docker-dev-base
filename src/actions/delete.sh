@@ -18,7 +18,7 @@ if [[ "$name" == "!ALL" ]]; then
   if user_confirm "Confirm delete Image $(style bold)${DOCKDEV_IMAGE}$(style normal) and $(style bold)all related Containers$(style normal)? (${options[*]})" $options $FALSE ; then
     if user_confirm "Please RE-CONFIRM: Confirm delete Image $(style bold)${DOCKDEV_IMAGE}$(style normal) and $(style bold)all related Containers$(style normal)? (${options2[*]})" $options2 $FALSE ; then
       # Delete containers
-      if docker ps -a | egrep "^\w+\s+${DOCKDEV_IMAGE}(:\w*)?\s+" > $DEV_NULL
+      if docker ps -a | egrep "\b${DOCKDEV_IMAGE}(:\w*)?\b" > $DEV_NULL
         then
           e "Deleting Containers for Image $(style bold)${DOCKDEV_IMAGE}$(style normal)..."
           docker rm -f `docker ps -a | egrep "^\w+\s+${DOCKDEV_IMAGE}(:\w*)?\s+" | awk '{print $1}'`

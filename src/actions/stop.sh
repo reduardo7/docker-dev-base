@@ -13,7 +13,7 @@ fi
 local name_action="${DOCKDEV_IMAGE}.${name}"
 
 if user_confirm "Stop container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
-  docker kill $name_action
+  docker kill ${name_action}
 else
   error "Operation cancelled!"
 fi

@@ -1,9 +1,7 @@
-## [name] [--no-mobile] [--no-solr]
+## [name] [--no-mobile]
 ## Run container.
 ## Params:
 ##     name:        Container Name. Default: "default"
-##     --no-mobile: No install Mobile project
-##     --no-solr:   No install Solr project
 
 # docker images
 # docker ps
@@ -31,9 +29,9 @@ _prepare() {
 
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
-if docker ps -a | egrep "\s${name_action}$" > /dev/null
+if docker ps -a | egrep "\b${name_action}\b" > /dev/null
   then
-    if docker ps | egrep "\s${name_action}$" > /dev/null
+    if docker ps | egrep "\b${name_action}\b" > /dev/null
       then
         # Running
         # Start console
@@ -50,7 +48,7 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
     fi
     # Create container
     if user_confirm "Create new container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
-      if docker images | egrep "^${DOCKDEV_IMAGE}\s" > /dev/null
+      if docker images | egrep "^${DOCKDEV_IMAGE}\b" > /dev/null
         then
           # Ports
           if [ ! -z "${DOCKDEV_PORTS}" ]; then
@@ -80,8 +78,7 @@ if docker ps -a | egrep "\s${name_action}$" > /dev/null
           fi
           # Run
           _prepare
-          DOCKDEV_CMD="${DOCKDEV_CMD//\"/\\\"}"
-          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} bash -c \"set -e && ${DOCKDEV_CMD}\""
+          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}"
           cmd_log "$cmd"
           #echo "$cmd"
         else

@@ -16,10 +16,10 @@ local name_action="${DOCKDEV_IMAGE}.${name}"
 
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
-if docker ps | egrep "\s${name_action}$" > /dev/null
+if docker ps | egrep "\b${name_action}\b" > /dev/null
   then
     # Start console
-    docker exec -i -t ${name_action} bash -c "set -e && ${DOCKDEV_CMD}"
+    docker exec -i -t ${name_action} ${DOCKDEV_CMD_CONSOLE}
   else
     # Error
     error "Container $(style bold)${name_action}$(style normal) is not running!"
