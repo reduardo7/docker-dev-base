@@ -1,4 +1,4 @@
-## [name] [--no-mobile]
+## [name]
 ## Run container.
 ## Params:
 ##     name:        Container Name. Default: "default"

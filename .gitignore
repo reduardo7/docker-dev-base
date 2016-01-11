@@ -1,1 +1,3 @@
 src/bashx
+projects/**
+!projects/.gitinclude
