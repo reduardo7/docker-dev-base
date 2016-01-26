@@ -40,14 +40,9 @@ _add_hosts "$(cat /etc/hostname)"
 sudo service mysql start
 sudo service apache2 restart
 
-echo "Starting fakeSMTP"
+echo "# Starting fakeSMTP"
 sudo java -jar /opt/fakeSMTP.jar -s -p 25 -b -o /var/mail &> /var/mail/mail.log &
 
-if ! echo "SHOW TABLES" | mysql -u root phpmyadmin &> /dev/null
-  then
-    e "Configure phpMyAdmin"
-    sudo dpkg-reconfigure phpmyadmin
-  fi
-
 # RUN
+echo "# Ready!"
 zsh

@@ -24,17 +24,6 @@ r() {
 
 ### PARAMS ###
 
-# Dockdev
-
-__upgrade() { # DockDev: Copy DockDev Base Scripts from docker-files to /home (.init*.sh; .zshrc; utils.sh).
-	sudo chown -v ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} /root
-	cp -fv /root/files/.init*.sh /home
-	cp -fv /root/files/.zshrc /home
-
-	echo "# Error after this, no problem"
-	cp -fv /root/files/utils.sh /home
-}
-
 # Others
 
 __help() { # Show this help.
@@ -46,7 +35,7 @@ __help() { # Show this help.
 	e "  bash $0 PARAMETER [ARGS]"
 	e
 	e "Parameters:"
-	cat $src | egrep '__\w+\(\)\s*\{' | sed 's/^__/#   /' | sed 's/\s*(\s*)\s*{\s*#\s*/\n#     /'
+	cat $src | egrep '__[a-zA-Z0-9_\-]+\(\)\s*\{' | sed 's/^__/#   /' | sed 's/\s*(\s*)\s*{\s*#\s*/\n#     /'
 	e
 }
 
@@ -58,4 +47,10 @@ if [ $# -eq 0 ] || ! grep "$cmd" $src > /dev/null
 		exit 1
 	fi
 
+# Log command to execute
+cmdLog="[`cat $src | egrep '__[a-zA-Z0-9_\-]+\(\)\s*\{' | sed 's/^__//' | sed 's/\s*(\s*)\s*{\s*#\s*/] /' | egrep "^$1"`"
+e "Start > $cmdLog"
 "__$@"
+r=$?
+e "End   > $cmdLog"
+exit $r
