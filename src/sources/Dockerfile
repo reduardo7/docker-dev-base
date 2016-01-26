@@ -9,6 +9,8 @@ CMD ["/sbin/my_init"]
 # Variables
 	ENV PATH_FILES docker-files
 	ENV PATH_HOME /home
+	ENV PATH_PROJECT /home/project
+	ENV PATH_PROJECTS /home/projects
 	ENV JAVA_HOME /usr/lib/jvm/default-java
 	ENV MYSQL_ROOT_PASS="root"
 
