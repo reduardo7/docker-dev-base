@@ -89,5 +89,15 @@ dockdev_get_name() {
   echo $DOCKDEV_NAME
 }
 
+# Fix Cursor
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_ALL=en_US.UTF-8
+export LANG=$LANG
+export LANGUAGE=$LANGUAGE
+export LC_ALL=$LC_ALL
+stty -a &>/dev/null
+stty iutf8
+
 PS1='%F{red}### %F{cyan}{%F{red}DockDev | $(dockdev_get_name)%F{cyan}} %F{red}%n%f%F{cyan}@%F{green}%M%f %B %F{blue}%~%f%b  $(git_prompt_info)
 %f'

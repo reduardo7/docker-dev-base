@@ -22,7 +22,7 @@ r() {
 	l
 }
 
-### PARAMS ###
+### ACTIONS ###
 
 # Others
 

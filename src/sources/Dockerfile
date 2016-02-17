@@ -7,14 +7,22 @@ CMD ["/sbin/my_init"]
 	LABEL description="Docker Development Environment Base - Test"
 
 # Variables
-	ENV PATH_FILES docker-files
 	ENV PATH_HOME /home
 	ENV PATH_PROJECT /home/project
 	ENV PATH_PROJECTS /home/projects
 	ENV JAVA_HOME /usr/lib/jvm/default-java
-	ENV MYSQL_ROOT_PASS="root"
+	ENV MYSQL_ROOT_PASS root
+
+# Fix ZSH cursor (http://stackoverflow.com/a/30321457/717267)
+	ENV LANG en_US.UTF-8
+	ENV LANGUAGE en_US:en
+	ENV LC_ALL en_US.UTF-8
+	RUN export LANG=$LANG
+	RUN export LANGUAGE=$LANGUAGE
+	RUN export LC_ALL=$LC_ALL
 
 # Install Software
+	RUN apt-get install -y curl
 	# Configs
 		# MySQL
 			RUN echo "mysql-server mysql-server/root_password password $MYSQL_ROOT_PASS" | debconf-set-selections
@@ -33,14 +41,14 @@ CMD ["/sbin/my_init"]
 		RUN add-apt-repository -y ppa:pdoes/ppa
 		RUN add-apt-repository -y ppa:olivier-berten/misc
 	# Update
-		RUN apt-get -y update
+		RUN apt-get update
 	# Install
 		RUN apt-get install -y \
 			git \
-			vim nano curl wget unzip zsh \
+			vim nano wget unzip zsh \
 			mysql-server mysql-client mysql-common \
 			apache2 \
-			php5 php5-mcrypt php5-gd php5-curl php5-xdebug \
+			php5 php5-mcrypt php5-gd php5-curl php5-xdebug php5-mysql php5-cli php5-dev \
 			mailutils sendmail \
 			#openjdk-7-jdk
 			oracle-java7-installer
@@ -54,14 +62,11 @@ CMD ["/sbin/my_init"]
 
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
-		RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-		RUN mkdir -p ~/.oh-my-zsh/plugins/docker/
-		RUN curl -fLo ~/.oh-my-zsh/plugins/docker/_docker https://raw.github.com/felixr/docker-zsh-completion/master/_docker
+		RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || echo Done
 	# Java JDK
 		# JAVA_HOME
 			#ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 	# MySQL
-	# Connect: mysql -u root -h 127.0.0.1 -P 3307
 		# Listenint all
 			RUN sed -i '/^bind-address\s*=/c\#bind-address           = 127.0.0.1' /etc/mysql/my.cnf
 		# Init DB
@@ -77,9 +82,21 @@ CMD ["/sbin/my_init"]
 			RUN a2enmod expires
 			RUN a2enmod rewrite
 	# PHP
+		# Config
+			# /etc/php5/apache2/php.ini
+				RUN sed -i 's/display_startup_errors = Off/display_startup_errors = On/g' /etc/php5/apache2/php.ini
+				RUN sed -i 's/display_errors = Off/display_errors = On/g' /etc/php5/apache2/php.ini
+				RUN sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/apache2/php.ini
+				RUN sed -i 's/post_max_size = \d+\w*/post_max_size = 12M/g' /etc/php5/apache2/php.ini
+			# /etc/php5/cli/php.ini
+				RUN sed -i 's/display_startup_errors = Off/display_startup_errors = On/g' /etc/php5/cli/php.ini
+				RUN sed -i 's/display_errors = Off/display_errors = On/g' /etc/php5/cli/php.ini
+				RUN sed -i 's/short_open_tag = Off/short_open_tag = On/g' /etc/php5/cli/php.ini
+				RUN sed -i 's/post_max_size = \d+\w*/post_max_size = 12M/g' /etc/php5/cli/php.ini
 		# Mods
 			RUN php5enmod mcrypt
 		# XDEBUG
+			RUN echo '' >> /etc/php5/apache2/php.ini
 			RUN echo '[Xdebug]' >> /etc/php5/apache2/php.ini
 			RUN echo 'zend_extension="/usr/lib/php5/20121212/xdebug.so"' >> /etc/php5/apache2/php.ini
 			RUN echo 'xdebug.remote_enable=1' >> /etc/php5/apache2/php.ini
@@ -87,6 +104,7 @@ CMD ["/sbin/my_init"]
 			RUN echo 'xdebug.profiler_enable=1' >> /etc/php5/apache2/php.ini
 			RUN echo 'xdebug.profiler_output_dir="/tmp/xdebug.log"' >> /etc/php5/apache2/php.ini
 			RUN echo 'xdebug.remote_host=172.17.0.1' >> /etc/php5/apache2/php.ini
+			RUN echo 'xdebug.max_nesting_level = 1000' >> /etc/php5/mods-available/xdebug.ini
 	# phpMyAdmin
 		RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php
 		# Apache2 Conf
@@ -100,22 +118,22 @@ CMD ["/sbin/my_init"]
 
 # Copy Files
 	WORKDIR $PATH_HOME
-	COPY $PATH_FILES/* $PATH_HOME/
+	COPY docker-files/* $PATH_HOME/
 	RUN echo >> $PATH_HOME/.bashrc
+	RUN echo >> $PATH_HOME/.zshrc
 
 # Configure Software
 	# Java Home
 		RUN echo "export JAVA_HOME=$JAVA_HOME" >> $PATH_HOME/.zshrc
+		RUN echo "export JAVA_HOME=$JAVA_HOME" >> $PATH_HOME/.bashrc
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
 		RUN cp -r ~/.oh-my-zsh $PATH_HOME/.oh-my-zsh
 		RUN cp -v $PATH_HOME/.zshrc /root/.zshrc
 
 # Init
 	WORKDIR $PATH_HOME
-		RUN bash build.sh
-		RUN rm build.sh
 	ENV HOME $PATH_HOME
 
-# Clean up APT when done.
+# Clean up APT when done
 RUN apt-get autoremove -y
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp

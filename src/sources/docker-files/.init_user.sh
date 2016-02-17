@@ -1,10 +1,6 @@
 #!/bin/bash
 # Executed every run
 
-# Env Config
-
-export HOME="$PATH_HOME"
-
 # User Config
 
 cd $PATH_HOME
@@ -64,7 +60,7 @@ chown -R ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} /var/mail
 
 # Run
 
-$PATH_HOME/.init_console.sh $PATH_HOME/.init.sh
+bash $PATH_HOME/.init_console.sh "$PATH_HOME/.init.sh"
 r=$?
 
 # Finish

@@ -1,19 +1,41 @@
 #!/bin/bash
 
-# Check
+# ### #
+# Env #
+# ### #
+
+export PATH_PROJECTS_CONT="$PATH_PROJECTS/$DOCKDEV_NAME"
+
+# ##################### #
+# Create Project Path's #
+# ##################### #
+
+[ ! -d "$PATH_PROJECTS_CONT" ] && mkdir $PATH_PROJECTS_CONT
+[ ! -d "$PATH_PROJECT" ] && (
+  ln -s $PATH_PROJECTS_CONT $PATH_PROJECT
+)
+
+# ##### #
+# Check #
+# ##### #
 
 SETUP_CHK_PATH="$HOME/.setup_check"
 [ ! -d $SETUP_CHK_PATH ] && mkdir $SETUP_CHK_PATH
 
-# SSH Config
+# ########## #
+# SSH Config #
+# ########## #
 
-if [ ! -f $SETUP_CHK_PATH/dockdev_ssh ]; then
+SETUP_CHK_PATH_SSH="$SETUP_CHK_PATH/dockdev_ssh"
+if [ ! -f $SETUP_CHK_PATH_SSH ]; then
   eval "$(ssh-agent -s)"
   ssh-add ~/.ssh/id_rsa
-  touch $SETUP_CHK_PATH/dockdev_ssh
+  touch $SETUP_CHK_PATH_SSH
 fi
 
-# Utils
+# ##### #
+# Utils #
+# ##### #
 
 e() {
   echo
@@ -31,16 +53,39 @@ _gitClone() {
   git clone $1 $2 || _error 61 "Error cloning '$1'"
 }
 
-# Init Path
+_setVars() {
+  if grep '{PATH_PROJECT}' $1 &>/dev/null
+    then
+      sudo sed -i "s/{PATH_PROJECT}/$(echo "$PATH_PROJECT" | sed 's/\//\\\//g')/g" $1
+    fi
+  if grep '{PATH_PROJECTS}' $1 &>/dev/null
+    then
+      sudo sed -i "s/{PATH_PROJECTS}/$(echo "$PATH_PROJECTS" | sed 's/\//\\\//g')/g" $1
+    fi
+}
 
-if [ ! -f $SETUP_CHK_PATH/host-bind ]; then
+_setConfig() {
+  rm -vf $HOME/$1
+  rm -vf $2
+  cp -vf /root/files/$1 $2
+  _setVars $2
+}
+
+# ######### #
+# Init Path #
+# ######### #
+
+SETUP_CHK_PATH_HOST_BIND="$SETUP_CHK_PATH/host-bind"
+if [ ! -f $SETUP_CHK_PATH_HOST_BIND ]; then
   ln -fs /root/files/.* $HOME/
   ln -fs /root/files/* $HOME/
   chmod a+x $HOME/*.sh $HOME/.*.sh
-  touch $SETUP_CHK_PATH/host-bind
+  touch $SETUP_CHK_PATH_HOST_BIND
 fi
 
-# Set /etc/hosts
+# ##### #
+# hosts #
+# ##### #
 
 _add_hosts() {
   local u="$2"
@@ -54,11 +99,23 @@ _add_hosts() {
 }
 
 _add_hosts "$(cat /etc/hostname)"
-_add_hosts tardis.local 10.80.50.49
-_add_hosts frankie.sv 10.80.30.29
-_add_hosts garofalo.avantrip.frankie.sv 10.80.30.29
-_add_hosts iata.api.frankie.sv 10.80.30.29
+#_add_hosts $SITE_URL
 
-# Init Project
+# ####### #
+# Init DB #
+# ####### #
 
-# CD $PROJECT_PATH
+#SETUP_CHK_PATH_DB="$SETUP_CHK_PATH/db-init"
+#if [ ! -f $SETUP_CHK_PATH_DB ]; then
+#  sudo dpkg-reconfigure phpmyadmin
+#  zcat $PATH_PROJECTS/db.sql.zip | mysql -uroot -p${MYSQL_ROOT_PASS} $MYSQL_DB_NAME
+#  touch $SETUP_CHK_PATH_DB
+#fi
+
+# ############ #
+# Init Project #
+# ############ #
+
+cd $PATH_PROJECT
+
+# gitClone ...

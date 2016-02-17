@@ -1,9 +1,17 @@
 # docker-dev-base
 Docker Development Base Script
 
+# Pre-Init
+
+1. Install **Docker**.
+
 # Init
 
-Run `bash dockdev` and work!
+1. `./dockdev install`: Install required software and common configurations.
+2. `./dockdev build`: Build unique image.
+3. `./dockdev run`: Run first init, import projects, configurations...
+
+Next times, only exec `./dockdev run`.
 
 # Workflow
 
