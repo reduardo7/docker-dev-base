@@ -83,6 +83,16 @@ if [ ! -f $SETUP_CHK_PATH_HOST_BIND ]; then
   touch $SETUP_CHK_PATH_HOST_BIND
 fi
 
+# ### #
+# GIT #
+# ### #
+
+SETUP_CHK_PATH_GIT="$SETUP_CHK_PATH/git"
+if [ ! -f $SETUP_CHK_PATH_GIT ]; then
+  git config --global push.default matching
+  touch $SETUP_CHK_PATH_GIT
+fi
+
 # ##### #
 # hosts #
 # ##### #
