@@ -1,10 +1,7 @@
 ## [name]
 ## Run container.
 ## Params:
-##     name:        Container Name. Default: "default"
-
-# docker images
-# docker ps
+##     name: Container Name. Default: "default"
 
 e "Image: $(style bold)${DOCKDEV_IMAGE}"
 
@@ -35,10 +32,12 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
       then
         # Running
         # Start console
-        docker exec -i -t ${name_action} ${DOCKDEV_CMD_CONSOLE}
+        e "New console..."
+        __new-console "$1"
       else
         # Start container
         _prepare
+        e "Starting container..."
         docker start -i ${name_action}
       fi
   else
@@ -78,7 +77,7 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
           fi
           # Run
           _prepare
-          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}"
+          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_SHELL=${DOCKDEV_SHELL} -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}"
           cmd_log "$cmd"
           #echo "$cmd"
         else

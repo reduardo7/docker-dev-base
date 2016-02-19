@@ -22,5 +22,9 @@ sudo java -jar /opt/fakeSMTP.jar -s -p 25 -b -o /var/mail &> /var/mail/mail.log 
 sudo service apache2 restart
 
 # RUN
-echo "# Ready!"
-zsh
+if [ -z "$DOCKDEV_SHELL" ]; then
+	echo "# WARNING: 'DOCKDEV_SHELL' environment variable is not defined! Default: 'bash'"
+	export DOCKDEV_SHELL="bash"
+fi
+echo "$ $DOCKDEV_SHELL"
+$DOCKDEV_SHELL

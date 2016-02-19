@@ -3,14 +3,13 @@ sudo -E -u ${DOCKDEV_USER_NAME} "$@"
 r=$?
 
 # Error?
-
 if [[ $r -ne 0 ]]; then
   echo "#########################################"
-  echo "### Error!"
+  echo "### Exit Code <> 0"
   echo "### Command:   $@"
   echo "### Exit code: $r"
   echo "#########################################"
-  zsh
+  bash
   r=$?
 fi
 
