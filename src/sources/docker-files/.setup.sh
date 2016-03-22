@@ -80,6 +80,15 @@ if [ ! -f $SETUP_CHK_PATH_HOST_BIND ]; then
   ln -fs /root/files/.* $HOME/
   ln -fs /root/files/* $HOME/
   chmod a+x $HOME/*.sh $HOME/.*.sh
+
+  _setSite() {
+    sudo mv -vf apache2.$1 /etc/apache2/sites-available/$1
+    _setVars /etc/apache2/sites-available/$1
+    sudo a2ensite $1
+  }
+
+  #_setSite site.conf
+
   touch $SETUP_CHK_PATH_HOST_BIND
 fi
 
@@ -128,4 +137,16 @@ _add_hosts "$(cat /etc/hostname)"
 
 cd $PATH_PROJECT
 
-# gitClone ...
+#if [ ! -d my-project ]; then
+#  _gitClone git@github.com:/test/my-project.git my-project
+#  (
+#    cd my-project/includes/config
+#    ln -vfs env.php.sample env.php
+#    ln -vfs local.ini.sample local.ini
+#  )
+#  (
+#    cd my-project
+#    composer install
+#    composer update
+#  )
+#fi

@@ -11,9 +11,7 @@ fi
 sudo service mysql start
 sudo service apache2 restart
 #sudo service tomcat7 restart
-
-echo "# Starting fakeSMTP"
-sudo java -jar /opt/fakeSMTP.jar -s -p 25 -b -o /var/mail &> /var/mail/mail.log &
+$PATH_HOME/utils.sh fakeSMTP start
 
 # Setup
 . $PATH_HOME/.setup.sh
@@ -23,8 +21,12 @@ sudo service apache2 restart
 
 # RUN
 if [ -z "$DOCKDEV_SHELL" ]; then
-	echo "# WARNING: 'DOCKDEV_SHELL' environment variable is not defined! Default: 'bash'"
-	export DOCKDEV_SHELL="bash"
+	if type zsh &>/dev/null
+		then
+			export DOCKDEV_SHELL="zsh"
+		else
+			export DOCKDEV_SHELL="bash"
+		fi
 fi
 echo "$ $DOCKDEV_SHELL"
 $DOCKDEV_SHELL

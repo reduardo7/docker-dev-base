@@ -94,7 +94,7 @@ if ${use_color} ; then
           #  echo ""
           fi
         }
-        PS1='\e[91m### \e[96m{\e[91mDockDev | $(dockdev_get_name)\e[96m} \e[91m\u\e[96m@\e[32m\h \e[34m\w  \e[33m$(git_prompt_info)
+        PS1='\e[91m### \e[96m{\e[91mDockDev | $(dockdev_get_name)\e[96m} \e[91m\u\e[96m@\e[32m\H \e[34m\w  \e[33m$(git_prompt_info)
 \e[39m'
 
         alias ls='ls --color=auto'
@@ -157,7 +157,7 @@ if [ ! -e "$HOME/.sudo_as_admin_successful" ] && [ ! -e "$HOME/.hushlogin" ] ; t
 	cat <<-EOF
 	To run a command as administrator (user "root"), use "sudo <command>".
 	See "man sudo_root" for details.
-	
+
 	EOF
     fi
     esac
