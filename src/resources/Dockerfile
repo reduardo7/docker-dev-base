@@ -8,8 +8,6 @@ CMD ["/sbin/my_init"]
 
 # Variables
 	ENV PATH_HOME /home
-	ENV PATH_PROJECT /home/project
-	ENV PATH_PROJECTS /home/projects
 	ENV JAVA_HOME /usr/lib/jvm/default-java
 	ENV MYSQL_ROOT_PASS root
 
@@ -119,8 +117,6 @@ CMD ["/sbin/my_init"]
 # Copy Files
 	WORKDIR $PATH_HOME
 	COPY docker-files/* $PATH_HOME/
-	RUN echo >> $PATH_HOME/.bashrc
-	RUN echo >> $PATH_HOME/.zshrc
 
 # Configure Software
 	# Java Home
