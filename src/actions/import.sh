@@ -25,7 +25,7 @@ if ! docker ps -a | egrep "\b${name_action}\b" > /dev/null
           cat "${file_import}" | docker import - "${DOCKDEV_IMPORTING}"
           e "Imported"
           # Run
-          __run "$param_name"
+          ACTIONS.run "$param_name"
         else
           # Error
           error "File $(style bold)${file_import}$(style normal) not exists!"

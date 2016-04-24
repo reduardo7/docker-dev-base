@@ -1,4 +1,4 @@
 ## [name]
 ## Alias for "run".
 
-__run "$@"
+ACTIONS.run "$@"

@@ -41,7 +41,7 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
         # Running
         # Start console
         e "New console..."
-        __new-console "$1"
+        ACTIONS.new-console "$1"
       else
         # Start container
         _prepare
