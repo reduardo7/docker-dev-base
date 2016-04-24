@@ -3,7 +3,15 @@
 ## Params:
 ##     name: Container Name. Default: "default"
 
-e "Image: $(style bold)${DOCKDEV_IMAGE}"
+local image
+
+if [ -z "${DOCKDEV_IMPORTING}" ]; then
+  image="${DOCKDEV_IMAGE}"
+else
+  image="${DOCKDEV_IMPORTING}"
+fi
+
+e "Image: $(style bold)${image}"
 
 . $SOURCES_PATH/hooks.sh
 
@@ -42,12 +50,12 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
       fi
   else
     # Pre-Checks
-    if [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
+    if [ -z "$DOCKDEV_IMPORTING" ] && [ -d "$DOCKDEV_PROJECTS/${name_action}" ]; then
       error "Path $(style bold)$DOCKDEV_PROJECTS/${name_action}$(style normal) already exists!"
     fi
     # Create container
     if user_confirm "Create new container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
-      if docker images | egrep "^${DOCKDEV_IMAGE}\b" > /dev/null
+      if docker images | egrep "^${image}\b" > /dev/null
         then
           # Ports
           if [ ! -z "${DOCKDEV_PORTS}" ]; then
@@ -77,11 +85,11 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
           fi
           # Run
           _prepare
-          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_SHELL=${DOCKDEV_SHELL} -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${DOCKDEV_IMAGE} ${DOCKDEV_CMD}"
+          cmd="$cmd ${DOCKDEV_RUN_PARAMS} --name=\"${name_action}\" --hostname=\"${name_action}\" -e DOCKDEV_SHELL=${DOCKDEV_SHELL} -e DOCKDEV_NAME=${name_action} -e DOCKDEV_MOUNTS_PATHS=${DOCKDEV_MOUNTS_PATHS} -i -t ${image} ${DOCKDEV_CMD}"
           cmd_log "$cmd"
           #echo "$cmd"
         else
-          error "Image $(style bold)${DOCKDEV_IMAGE}$(style normal) not found! (run 'bash $0 build'?)"
+          error "Image $(style bold)${image}$(style normal) not found! (run 'bash $0 build'?)"
         fi
     else
       error "Operation cancelled!"
