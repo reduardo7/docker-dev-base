@@ -7,7 +7,6 @@ CMD ["/sbin/my_init"]
 	LABEL description="Docker Development Environment Base - Test"
 
 # Variables
-	ENV HOME /home
 	ENV PATH_HOME /home
 	ENV PATH_PROJECT /home/project
 	ENV PATH_PROJECTS /home/projects
@@ -63,7 +62,7 @@ CMD ["/sbin/my_init"]
 
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
-		RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || echo Done
+		RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" || :
 	# Java JDK
 		# JAVA_HOME
 			#ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
@@ -125,14 +124,14 @@ CMD ["/sbin/my_init"]
 
 # Configure Software
 	# Java Home
-		RUN echo "export JAVA_HOME=$JAVA_HOME" >> $HOME/.zshrc
+		RUN echo "export JAVA_HOME=$JAVA_HOME" >> $PATH_HOME/.zshrc
 		RUN echo "export JAVA_HOME=$JAVA_HOME" >> $PATH_HOME/.bashrc
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
-		RUN cp -r ~/.oh-my-zsh $HOME/.oh-my-zsh
-		RUN cp -v $HOME/.zshrc /root/.zshrc
+		RUN cp -r $HOME/.oh-my-zsh $PATH_HOME/.oh-my-zsh
+		RUN cp -v $PATH_HOME/.zshrc $HOME/.zshrc
 
 # Init
-	WORKDIR $HOME
+	WORKDIR $PATH_HOME
 
 # Clean up APT when done
 RUN apt-get autoremove -y

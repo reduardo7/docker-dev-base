@@ -3,15 +3,15 @@ Docker Development Base Script
 
 # Pre-Init
 
-1. Install **Docker**.
+1. Install **docker**.
+2. Set **SSH Key** for **Bitbucket** and **GitHub** accounts. **WARNING**: **No** use **passphrase** for your **SSH Key**!
 
-# Init
+# Init/Setup
 
-1. `./dockdev install`: Install required software and common configurations.
-2. `./dockdev build`: Build unique image.
-3. `./dockdev run`: Run first init, import projects, configurations...
-
-Next times, only exec `./dockdev run`.
+1. Go to project root directory: `cd path/to/docker-dev-base`
+2. `./dockdev install`: Install required software and common configurations.
+3. `./dockdev build`: Build unique image.
+4. `./dockdev run`: Run first init, import projects, configurations...
 
 # Workflow
 
