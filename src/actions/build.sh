@@ -14,7 +14,7 @@ if docker images | egrep "^${DOCKDEV_IMAGE}\b" > $DEV_NULL
 
 if [ -z "$container_id" ]; then
   e "Building $(style bold)${DOCKDEV_IMAGE}$(style normal) from $(style bold)Dockerfile$(style normal)..."
-  docker build -t $DOCKDEV_IMAGE ${SOURCES_PATH}
+  docker build -t $DOCKDEV_IMAGE ${RESOURCES_PATH}
 else
   _rmi $container_id
   e "Building $(style bold)${DOCKDEV_IMAGE}$(style normal) from Container ID $(style bold)${container_id}$(style normal)..."

@@ -13,7 +13,7 @@ fi
 
 e "Image: $(style bold)${image}"
 
-. $SOURCES_PATH/hooks.sh
+. $RESOURCES_PATH/hooks.sh
 
 local cmd="docker run"
 local name="$1"
