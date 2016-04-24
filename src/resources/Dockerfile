@@ -35,28 +35,28 @@ CMD ["/sbin/my_init"]
 			RUN echo "phpmyadmin phpmyadmin/mysql/app-pass password $MYSQL_ROOT_PASS" | debconf-set-selections
 			RUN echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
 	# Repos
-		RUN add-apt-repository -y ppa:webupd8team/java
+		#RUN add-apt-repository -y ppa:webupd8team/java
 		RUN add-apt-repository -y ppa:pdoes/ppa
 		RUN add-apt-repository -y ppa:olivier-berten/misc
 	# Update
 		RUN apt-get update
 	# Install
 		RUN apt-get install -y \
-			git \
 			vim nano wget unzip zsh \
 			mysql-server mysql-client mysql-common \
 			apache2 \
 			php5 php5-mcrypt php5-gd php5-curl php5-xdebug php5-mysql php5-cli php5-dev \
-			mailutils sendmail \
-			#openjdk-7-jdk
-			oracle-java7-installer
+			#mailutils sendmail \
+			openjdk-7-jdk \
+			git
+			#oracle-java7-installer
 		# phpMyAdmin
-			RUN apt-get install -y phpmyadmin
+			#RUN apt-get install -y phpmyadmin
 		# FakeSMTP
-			RUN wget -q http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip
-			RUN unzip fakeSMTP-latest.zip -d /opt
-			RUN rm -vf fakeSMTP-latest.zip
-			RUN mv -vf /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
+			#RUN wget -q http://nilhcem.github.com/FakeSMTP/downloads/fakeSMTP-latest.zip
+			#RUN unzip fakeSMTP-latest.zip -d /opt
+			#RUN rm -vf fakeSMTP-latest.zip
+			#RUN mv -vf /opt/fakeSMTP-*.jar /opt/fakeSMTP.jar
 
 # Configure Basic Software
 	# oh-my-zsh | https://github.com/robbyrussell/oh-my-zsh
@@ -94,25 +94,25 @@ CMD ["/sbin/my_init"]
 		# Mods
 			RUN php5enmod mcrypt
 		# XDEBUG
-			RUN echo '' >> /etc/php5/apache2/php.ini
-			RUN echo '[Xdebug]' >> /etc/php5/apache2/php.ini
-			RUN echo 'zend_extension="/usr/lib/php5/20121212/xdebug.so"' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.remote_enable=1' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.remote_port="9000"' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.profiler_enable=1' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.profiler_output_dir="/tmp/xdebug.log"' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.remote_host=172.17.0.1' >> /etc/php5/apache2/php.ini
-			RUN echo 'xdebug.max_nesting_level = 1000' >> /etc/php5/mods-available/xdebug.ini
+			#RUN echo '' >> /etc/php5/apache2/php.ini
+			#RUN echo '[Xdebug]' >> /etc/php5/apache2/php.ini
+			#RUN echo 'zend_extension="/usr/lib/php5/20121212/xdebug.so"' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.remote_enable=1' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.remote_port="9000"' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.profiler_enable=1' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.profiler_output_dir="/tmp/xdebug.log"' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.remote_host=172.17.0.1' >> /etc/php5/apache2/php.ini
+			#RUN echo 'xdebug.max_nesting_level = 1000' >> /etc/php5/mods-available/xdebug.ini
 	# phpMyAdmin
-		RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php
+		#RUN sed -i "s#// \$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#\$cfg\['Servers'\]\[\$i\]\['AllowNoPassword'\] = TRUE;#g" /etc/phpmyadmin/config.inc.php
 		# Apache2 Conf
-			RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
-			RUN a2enconf phpmyadmin.conf
+			#RUN ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+			#RUN a2enconf phpmyadmin.conf
 		# Session
-			RUN echo "# Session Time (8 hours)" >> /etc/phpmyadmin/config.inc.php
-			RUN echo "\$sessionDuration = 60 * 60 * 8; // 60 * 60 * 24 * 7 = one week" >> /etc/phpmyadmin/config.inc.php
-			RUN echo "ini_set('session.gc_maxlifetime', \$sessionDuration);" >> /etc/phpmyadmin/config.inc.php
-			RUN echo "\$cfg['LoginCookieValidity'] = \$sessionDuration;" >> /etc/phpmyadmin/config.inc.php
+			#RUN echo "# Session Time (8 hours)" >> /etc/phpmyadmin/config.inc.php
+			#RUN echo "\$sessionDuration = 60 * 60 * 8; // 60 * 60 * 24 * 7 = one week" >> /etc/phpmyadmin/config.inc.php
+			#RUN echo "ini_set('session.gc_maxlifetime', \$sessionDuration);" >> /etc/phpmyadmin/config.inc.php
+			#RUN echo "\$cfg['LoginCookieValidity'] = \$sessionDuration;" >> /etc/phpmyadmin/config.inc.php
 
 # Copy Files
 	WORKDIR $PATH_HOME
