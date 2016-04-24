@@ -77,8 +77,8 @@ _setConfig() {
 
 SETUP_CHK_PATH_HOST_BIND="$SETUP_CHK_PATH/host-bind"
 if [ ! -f $SETUP_CHK_PATH_HOST_BIND ]; then
-  ln -fs /root/files/.* $HOME/
-  ln -fs /root/files/* $HOME/
+  ln -fs /root/files/.*.sh $HOME/
+  ln -fs /root/files/*.sh $HOME/
   chmod a+x $HOME/*.sh $HOME/.*.sh
 
   _setSite() {

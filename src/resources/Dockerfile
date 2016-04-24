@@ -127,6 +127,7 @@ CMD ["/sbin/my_init"]
 		RUN cp -v $PATH_HOME/.zshrc $HOME/.zshrc
 
 # Init
+	RUN chmod a+x $PATH_HOME/*.sh $PATH_HOME/.*.sh
 	WORKDIR $PATH_HOME
 
 # Clean up APT when done

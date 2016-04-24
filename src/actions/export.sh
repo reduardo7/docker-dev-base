@@ -4,13 +4,13 @@
 ##     name: Container Name. Default: "default"
 
 local name="$1"
-local file_export="${DOCKDEV_PROJECTS}/${name_action}.tar"
 
 if [ -z "$name" ]; then
   name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
 fi
 
 local name_action="${DOCKDEV_IMAGE}.${name}"
+local file_export="${DOCKDEV_PROJECTS}/${name_action}.tar"
 
 # Run
 if docker ps -a | egrep "\b${name_action}\b" > /dev/null
