@@ -28,6 +28,7 @@ if ! type curl > /dev/null
 if ! type docker > /dev/null
   then
     e "Installing $(style bold)docker$(style normal)..."
+        #wget -qO- https://get.docker.com/ | sh
     curl -sSL https://get.docker.com/ | sh
     register_user_docker
     e

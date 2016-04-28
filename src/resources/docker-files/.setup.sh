@@ -12,6 +12,7 @@ export PATH_PROJECTS_CONT="$PATH_PROJECTS/$DOCKDEV_NAME"
 
 [ ! -d "$PATH_PROJECTS_CONT" ] && mkdir $PATH_PROJECTS_CONT
 [ ! -d "$PATH_PROJECT" ] && (
+  git config --global push.default matching
   ln -s $PATH_PROJECTS_CONT $PATH_PROJECT
 )
 
