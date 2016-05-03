@@ -54,7 +54,7 @@ if docker ps -a | egrep "\b${name_action}\b" > /dev/null
       error "Path $(style bold)$DOCKDEV_PROJECTS/${name_action}$(style normal) already exists!"
     fi
     # Create container
-    if user_confirm "Create new container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
+    if [ -z "$DOCKDEV_IMPORTING" ] && user_confirm "Create new container named $(style bold)${name_action}$(style normal)? (${options[*]})" $options $FALSE ; then
       if docker images | egrep "^${image}\b" > /dev/null
         then
           # Ports
