@@ -1,7 +1,7 @@
 ## [name]
 ## Import image.
 ## Params:
-##     name: Container Name. Default: "default"
+##     name: Destination Container Name. Default: "default"
 
 local param_name="$1"
 local name="$param_name"
