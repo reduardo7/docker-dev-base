@@ -3,13 +3,9 @@
 ## Params:
 ##     name: Container name. To delete ALL Containers and Image, use "!ALL".
 
-local name="$1"
+local name="$(name-validate $1)"
 local options=( y n )
 local options2=( s n )
-
-if [ -z "$name" ]; then
-  name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
-fi
 
 e "$(style bold)WARINING! All container data $(style underline)WILL BE LOST!"
 pause
@@ -30,7 +26,7 @@ if [[ "$name" == "!ALL" ]]; then
     fi
   fi
 else
-  name="${DOCKDEV_IMAGE}.$name"
+  name="$(name-action $name)"
   if user_confirm "Confirm delete Container $(style bold)${name}$(style normal)? (${options[*]})" $options $FALSE; then
     if user_confirm "Please RE-CONFIRM: Confirm delete Container $(style bold)${name}$(style normal)? (${options2[*]})" $options2 $FALSE; then
       # Delete container

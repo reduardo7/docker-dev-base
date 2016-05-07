@@ -1,0 +1,1 @@
+echo "${DOCKDEV_IMAGE}.$@"

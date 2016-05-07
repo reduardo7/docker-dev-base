@@ -4,15 +4,11 @@
 ##     name: Destination Container Name. Default: "default"
 
 local param_name="$1"
-local name="$param_name"
-
-if [ -z "$name" ]; then
-  name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
-fi
-
-local name_action="${DOCKDEV_IMAGE}.${name}"
-export DOCKDEV_IMPORTING="import.${name_action}"
+local name="$(name-validate $param_name)"
+local name_action="$(name-action ${name})"
 local file_import="${DOCKDEV_PROJECTS}/${name_action}.tar"
+
+export DOCKDEV_IMPORTING="import.${name_action}"
 
 # Run
 if ! docker ps -a | egrep "\b${name_action}\b" > /dev/null

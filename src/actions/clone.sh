@@ -8,11 +8,7 @@
 
 local options=( y n )
 local destination_name="$1"
-local origin_name="$2"
-
-if [ -z "$origin_name" ]; then
-  origin_name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
-fi
+local origin_name="$(name-validate $2)"
 
 ACTIONS.export "$origin_name"
 ACTIONS.import "$destination_name"

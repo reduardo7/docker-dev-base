@@ -16,14 +16,9 @@ e "Image: $(style bold)${image}"
 . $RESOURCES_PATH/hooks.sh
 
 local cmd="docker run"
-local name="$1"
+local name="$(name-validate $1)"
 local options=( y n )
-
-if [ -z "$name" ]; then
-  name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
-fi
-
-local name_action="${DOCKDEV_IMAGE}.${name}"
+local name_action="$(name-action ${name})"
 
 # Prepare
 _prepare() {

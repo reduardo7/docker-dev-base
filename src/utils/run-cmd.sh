@@ -1,15 +1,10 @@
-local name="$1"
+local name="$(name-validate $1)"
 local cmd="$2"
 local working_dir="$3"
+local name_action="$(name-action ${name})"
 
 e "Image: $(style bold)${DOCKDEV_IMAGE}"
 e "Command: $(style bold)${cmd}"
-
-if [ -z "$name" ]; then
-  name="$DOCKDEV_CONTAINER_NAME_DEFAULT"
-fi
-
-local name_action="${DOCKDEV_IMAGE}.${name}"
 
 # Run
 e "Running $(style bold)${name}$(style normal) [$(style bold)${name_action}$(style normal)]"
