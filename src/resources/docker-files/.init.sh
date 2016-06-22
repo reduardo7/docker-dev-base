@@ -9,9 +9,8 @@ fi
 
 # Start Services 1
 sudo service mysql start
-sudo service apache2 restart
 #sudo service tomcat7 restart
-$PATH_HOME/utils.sh fakeSMTP start
+$PATH_HOME/utils.sh fakeSMTP restart
 
 # Setup
 . $PATH_HOME/.setup.sh
