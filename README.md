@@ -15,13 +15,8 @@ Docker Development Base Script
 
 # Workflow
 
-1. Go to project root directory: `cd path/to/docker-dev-base`
-2. Install required software and configuration: `bash dockdev install`
-3. Build image: `bash dockdev build`
-4. Run:
-    1. Run **default** container: `bash dockdev run`
-    2. Run **another** container: `bash dockdev run CONTAINER_NAME`
-5. Open new command line: `bash dockdev new-console`
+1. Go to: `cd path/to/avantrip-autos-dockdev`
+2. Start: `./dockdev run` o `./dockdev start`
 
 # Doc
 
@@ -54,7 +49,7 @@ See help:
 
 `/var/log/apache2/*.log`
 
-# Access & Password
+# Users & Password
 
 ## System user password
 
@@ -64,8 +59,7 @@ The `username`.
 
 * User: `root`
 * Password: - no password -
-* Internal Port: `3306` (inside Docker, for internal software and service, such as Apache)
-* Public Port: `3307` (outside Docker, for remote connection, IDE, etc)
+* Port: `3306`
 
 ## phpMyAdmin
 

@@ -1,4 +1,4 @@
 ## [name]
-## Alias for "run".
+## Alias of "run".
 
-ACTIONS.run "$@"
+@ACTIONS.run "$@"

@@ -44,8 +44,12 @@ e() {
   echo
 }
 
+_warn() {
+  e "Warning! $@" >&2
+}
+
 _error() {
-  e "Error! Code: $1. $2"
+  e "Error! Code: $1. $2" >&2
   bash
   exit $1
 }

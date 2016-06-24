@@ -51,13 +51,6 @@ if [ ! -d "$PATH_HOME/.git" ]; then
   fi
 fi
 
-# Fixes Mount
-
-#for DOCKDEV_MOUNTS_PATHS_P in $(echo "${DOCKDEV_MOUNTS_PATHS}" | tr ":" "\n") ; do
-#  chown -R ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} $DOCKDEV_MOUNTS_PATHS_P
-#done
-chown -R ${DOCKDEV_USER_NAME}:${DOCKDEV_GROUP_NAME} /var/mail
-
 # Run
 
 bash $PATH_HOME/.init_console.sh "$PATH_HOME/.init.sh"
