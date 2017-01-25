@@ -2,3 +2,4 @@ src/bashx
 projects/my-project*
 !projects/.gitkeep
 .DS_Store
+.idea/*
