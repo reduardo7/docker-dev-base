@@ -9,8 +9,8 @@ if ! grep "$hosts_label" /etc/hosts > $DEV_NULL
 
 if ! ping -c 1 $1 > $DEV_NULL
   then
-    @e "Installing host $(@style bold)$1"
+    @print "Installing host $(@style bold)$1"
     sudo bash -c "echo '127.0.0.1 $1' >> /etc/hosts"
   else
-    @e "Host $(@style bold)$1$(@style normal) already installed!"
+    @print "Host $(@style bold)$1$(@style normal) already installed!"
   fi

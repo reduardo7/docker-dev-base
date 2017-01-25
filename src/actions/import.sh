@@ -18,9 +18,9 @@ if ! docker ps -a | egrep "\b${name_action}\b" > $DEV_NULL
       then
         if [ -f "${file_import}" ]; then
           # Import
-          @e "Importing $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]..."
+          @print "Importing $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]..."
           cat "${file_import}" | docker import - "${DOCKDEV_IMPORTING}"
-          @e "Imported"
+          @print "Imported"
           # Run
           @ACTIONS.run "$param_name"
         else

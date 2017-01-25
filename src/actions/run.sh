@@ -12,7 +12,7 @@ else
   image="${DOCKDEV_IMPORTING}"
 fi
 
-@e "Image: $(@style bold)${image}"
+@print "Image: $(@style bold)${image}"
 
 . $RESOURCES_PATH/hooks.sh
 
@@ -25,23 +25,23 @@ local name_action="$(name-action ${name})"
 _prepare() {
   @set-on-exit HOOKS.after-run
   HOOKS.before-run
-  @e "Command: $(@style bold)${DOCKDEV_CMD}"
+  @print "Command: $(@style bold)${DOCKDEV_CMD}"
 }
 
 # Run
-@e "Running $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]"
+@print "Running $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]"
 if docker ps -a | egrep "\b${name_action}\b" > $DEV_NULL
   then
     if docker ps | egrep "\b${name_action}\b" > $DEV_NULL
       then
         # Running
         # Start console
-        @e "New console..."
+        @print "New console..."
         @ACTIONS.new-console "$1"
       else
         # Start container
         _prepare
-        @e "Starting container..."
+        @print "Starting container..."
         docker start -i ${name_action}
       fi
   else

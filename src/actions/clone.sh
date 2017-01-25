@@ -14,9 +14,9 @@ local origin_name="$(name-validate $2)"
 @ACTIONS.export "$origin_name"
 @ACTIONS.import "$destination_name"
 
-@e "Copy project resources..."
+@print "Copy project resources..."
 sudo cp -rp "$DOCKDEV_PROJECTS/${DOCKDEV_IMAGE}.${origin_name}" "$DOCKDEV_PROJECTS/${DOCKDEV_IMAGE}.${destination_name}"
-@e "Finish!"
+@print "Finish!"
 
 if @user-confirm "Start cloned container $(@style bold)${destination_name}$(@style normal)? (${options[*]})" $options $FALSE ; then
   @ACTIONS.run "$destination_name"
