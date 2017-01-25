@@ -12,9 +12,9 @@ local file_import="${DOCKDEV_PROJECTS}/${name_action}.tar"
 export DOCKDEV_IMPORTING="import.${name_action}"
 
 # Run
-if ! docker ps -a | egrep "\b${name_action}\b" > $DEV_NULL
+if ! docker ps -a | egrep "\b${name_action}\b" > /dev/null
   then
-    if ! docker images | egrep "^${file_import}\b" > $DEV_NULL
+    if ! docker images | egrep "^${file_import}\b" > /dev/null
       then
         if [ -f "${file_import}" ]; then
           # Import

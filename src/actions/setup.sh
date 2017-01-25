@@ -1,7 +1,7 @@
 ##
 ## Install required software and apply basic configuracion.
 
-if ! type curl > $DEV_NULL
+if ! type curl > /dev/null
   then
     @print "Installing $(@style bold)curl$(@style normal)..."
     sudo apt-get install -f curl
@@ -9,7 +9,7 @@ if ! type curl > $DEV_NULL
     @print "$(@style bold)curl$(@style normal) already installed!"
   fi
 
-if ! type docker > $DEV_NULL
+if ! type docker > /dev/null
   then
     @print "Installing $(@style bold)docker$(@style normal)..."
         #wget -qO- https://get.docker.com/ | sh

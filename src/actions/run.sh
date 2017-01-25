@@ -30,9 +30,9 @@ _prepare() {
 
 # Run
 @print "Running $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]"
-if docker ps -a | egrep "\b${name_action}\b" > $DEV_NULL
+if docker ps -a | egrep "\b${name_action}\b" > /dev/null
   then
-    if docker ps | egrep "\b${name_action}\b" > $DEV_NULL
+    if docker ps | egrep "\b${name_action}\b" > /dev/null
       then
         # Running
         # Start console
@@ -51,7 +51,7 @@ if docker ps -a | egrep "\b${name_action}\b" > $DEV_NULL
     fi
     # Create container
     if [ -z "$DOCKDEV_IMPORTING" ] && @user-confirm "Create new container named $(@style bold)${name_action}$(@style normal)? (${options[*]})" $options $FALSE ; then
-      if docker images | egrep "^${image}\b" > $DEV_NULL
+      if docker images | egrep "^${image}\b" > /dev/null
         then
           # Ports
           if [ ! -z "${DOCKDEV_PORTS}" ]; then

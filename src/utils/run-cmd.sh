@@ -8,7 +8,7 @@ local name_action="$(name-action ${name})"
 
 # Run
 @print "Running $(@style bold)${name}$(@style normal) [$(@style bold)${name_action}$(@style normal)]"
-if docker ps | egrep "\b${name_action}\b" > $DEV_NULL
+if docker ps | egrep "\b${name_action}\b" > /dev/null
   then
     # Start console
     if [ -z "$working_dir" ]; then

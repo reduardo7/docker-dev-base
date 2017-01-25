@@ -1,7 +1,7 @@
 ## [container-id]
 ## Build image
 
-if docker images | egrep "^${DOCKDEV_IMAGE}\b" > $DEV_NULL
+if docker images | egrep "^${DOCKDEV_IMAGE}\b" > /dev/null
   then
     @print "Deleting image $(@style bold)${DOCKDEV_IMAGE}$(@style normal)..."
     docker rmi $DOCKDEV_IMAGE || @error "Error deleting image $(@style bold)${DOCKDEV_IMAGE}$(@style normal)!"
